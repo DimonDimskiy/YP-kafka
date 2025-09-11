@@ -1,0 +1,29 @@
+networks:
+  kafka-app:
+    external: true
+
+services:
+
+  producer:
+    build: .
+    command: python -u -m app.producer
+    deploy:
+      replicas: 2
+    networks:
+      - kafka-app
+
+  single-consumer:
+    build: .
+    command: python -u -m app.single_consumer
+    deploy:
+      replicas: 2
+    networks:
+      - kafka-app
+
+  batch-consumer:
+    build: .
+    command: python -u -m app.batch_consumer
+    deploy:
+      replicas: 2
+    networks:
+      - kafka-app

@@ -1,0 +1,3 @@
+confluent-kafka[json]
+pydantic
+faker

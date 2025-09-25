@@ -86,13 +86,15 @@ class TestFaustApp(unittest.TestCase):
     def test_user_blocking(self):
         """Сообщения от заблоченных пользователей не должны доходить"""
 
-        # Сообщение от незаблокированного пользователя должно пройти
+        # Сообщение от незаблокированного пользователя должно пройти, разблокируем на всякий случай
+        # вдруг упало на втором кейсе
         self.send(config.BLOCKED_USERS_TOPIC, {"initiator": "eduard", "target": "test_2", "unblock": True})
+        time.sleep(3)
         self.send(
             config.RAW_MSG_TOPIC,
             {"sender": "test_2", "recipient": "eduard", "value": "Это сообщение от пока незаблоченного юзера"},
         )
-        time.sleep(3)
+
         result = self.poll_result()
         self.assertIsNotNone(result)
         self.assertEqual(result["value"], "Это сообщение от пока незаблоченного юзера")
